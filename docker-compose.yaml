@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  db:
+    image: postgis/postgis
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data2:/data
+    env_file:
+      - settings.env
+    docker-compose exec:
+      -psql -U postgres postgres -d postgres
+
+  pg_featureserv:
+    image: pramsey/pg_featureserv:latest
+    env_file:
+      - settings.env
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+volumes:
+  db-data2:
